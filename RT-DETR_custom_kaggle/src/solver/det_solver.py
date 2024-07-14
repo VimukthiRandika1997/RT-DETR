@@ -29,6 +29,7 @@ class DetSolver(BaseSolver):
         base_ds = get_coco_api_from_dataset(self.val_dataloader.dataset)
         # best_stat = {'coco_eval_bbox': 0, 'coco_eval_masks': 0, 'epoch': -1, }
         best_stat = {'epoch': -1, }
+        max_coco_eval_bbox = 0
 
         start_time = time.time()
         for epoch in range(self.last_epoch + 1, args.epoches):
@@ -42,7 +43,7 @@ class DetSolver(BaseSolver):
             self.lr_scheduler.step()
             
             if self.output_dir:
-                checkpoint_paths = [self.output_dir / 'checkpoint.pth']
+                checkpoint_paths = [self.output_dir / 'checkpoint.pth'] # saving a checkpoint for the current epoch!
                 # extra checkpoint before LR drop and every 100 epochs
                 if (epoch + 1) % args.checkpoint_step == 0:
                     checkpoint_paths.append(self.output_dir / f'checkpoint{epoch:04}.pth')
@@ -63,6 +64,14 @@ class DetSolver(BaseSolver):
                     best_stat['epoch'] = epoch
                     best_stat[k] = test_stats[k][0]
             print('best_stat: ', best_stat)
+
+            # added by vimukthi
+            # save the best model based on validation dataset result, NOTE: only works for iou_type == bbox 
+            if self.output_dir:
+                if max_coco_eval_bbox < test_stats['coco_eval_bbox'][0]:
+                    max_coco_eval_bbox = test_stats['coco_eval_bbox'][0] 
+                    save_path = self.output_dir / 'checkpoint_best.pth'
+                    dist.save_on_master(self.state_dict(epoch), save_path)
 
 
             log_stats = {**{f'train_{k}': v for k, v in train_stats.items()},
@@ -87,6 +96,7 @@ class DetSolver(BaseSolver):
 
             # added by vimukthi
             del train_stats
+            del test_stats
             gc.collect()
 
 
@@ -106,5 +116,9 @@ class DetSolver(BaseSolver):
                 
         if self.output_dir:
             dist.save_on_master(coco_evaluator.coco_eval["bbox"].eval, self.output_dir / "eval.pth")
+            # print("\nEval: ", test_stats, "\n")
         
         return
+
+# added by vimukthi
+# Ref: https://www.ridgerun.ai/post/mean-average-precision-map-and-other-object-detection-metrics by Vimukthi

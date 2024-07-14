@@ -2,7 +2,7 @@
 set -e
 
 export CONFIG_PATH=./configs/rtdetr/rtdetr_r101vd_6x_coco_custom.yml
-export CKPT_PATH=./output/custom_rt_detr_model/<checkpoint_name.pth>
+export CKPT_PATH=./output/custom_rt_detr_model/checkpoint_best.pth
 
 while getopts c:m: flag
 do
