@@ -1,0 +1,32 @@
+__include__: [
+  '../dataset/custom_detection.yml',
+  '../runtime.yml',
+  './include/dataloader.yml',
+  './include/optimizer.yml',
+  './include/rtdetr_r50vd.yml',
+]
+
+output_dir: ./output/custom_rt_detr_model
+
+PResNet:
+  depth: 101
+  pretrained: False
+
+
+HybridEncoder:
+  # intra
+  hidden_dim: 384
+  dim_feedforward: 2048
+
+
+RTDETRTransformer:
+  feat_channels: [384, 384, 384]
+
+
+optimizer:
+  type: AdamW
+  params: 
+    - 
+      params: 'backbone'
+      lr: 0.000001
+  
