@@ -1,20 +1,16 @@
 # New README
 ## Custom Model Training - Rabot Data
 
-### 01. Move your dataset to `./data` folder first, then run `prepare_dataset.sh`
-        # dataset should be in rabot format: rabot_dataset [ project1, project2, .... projectN ]
-        bash prepare_dataset.sh -n <dataset_name>
-
-### 02. Edit config file to set number of classes and othe hyperparameters(epochs, lr, etc).
+### 01. Edit config file to set number of classes and othe hyperparameters(epochs, lr, etc).
         # configs/dataset/custom_detection.yml: for `num_classes`
         # configs/rtdetr/include/optimizer: `epochs`
         # configs/rtdetr/rtdetr_r101vd_6x_coco_custom.yml: for other custom settings
 
-### 03. Run `run_training.sh` for training.
+### 02. Run `run_training.sh` for training.
         # select either single gpu or multi-gpu (default is set to single gpu)
-### 04. Run `run_eval.sh` for evaluation either for val or test datasets using finetuned checkpoint file.
+### 03. Run `run_eval.sh` for evaluation either for val or test datasets using finetuned checkpoint file.
         # select either single gpu or multi-gpu (default is set to single gpu)
-### 05. Run `run_inference.sh` for image-wise inference.
+### 04. Run `run_inference.sh` for image-wise inference.
         # set config paths and run
 
 # Old README
