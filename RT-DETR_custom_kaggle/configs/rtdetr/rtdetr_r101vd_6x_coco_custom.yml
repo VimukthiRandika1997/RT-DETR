@@ -7,7 +7,7 @@ __include__: [
 ]
 
 output_dir: ./output/custom_rt_detr_model
-checkpoint_step: 20 # checkpoints will be save every this number of epochs
+checkpoint_step: 50 # checkpoints will be save every this number of epochs
 
 PResNet:
   depth: 101
