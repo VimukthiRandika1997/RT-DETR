@@ -30,4 +30,7 @@ optimizer:
     - 
       params: 'backbone'
       lr: 0.000001
+    -
+      params: 'encoder'
+      lr: 0.000001
   
