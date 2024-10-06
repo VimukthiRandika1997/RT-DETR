@@ -1,5 +1,5 @@
 # New README
-## Custom Model Training - Rabot Data
+## Custom Model Training
 
 ### 01. Edit config file to set number of classes and othe hyperparameters(epochs, lr, etc).
         # configs/dataset/custom_detection.yml: for `num_classes`
